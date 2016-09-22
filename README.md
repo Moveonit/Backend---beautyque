@@ -1,0 +1,2 @@
+# beautyque
+Beautyque project
