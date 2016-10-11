@@ -16,14 +16,16 @@ $api->version('v1', function ($api) {
 
         $api->post('login','Auth\JwtAuthenticateController@authenticate');
 
-        $api->get('refresh','Auth\JwtAuthenticateController@authenticate');
+        $api->get('refresh','Auth\JwtAuthenticateController@refresh');
     });
 
     $api->group([
         'middleware' => 'jwt.auth',
         'namespace' => 'App\Http\Controllers\v1'
     ], function ($api) {
+
         $api->get('me', 'Auth\JwtAuthenticateController@me');
+
     });
 });
 //use Illuminate\Http\Request;

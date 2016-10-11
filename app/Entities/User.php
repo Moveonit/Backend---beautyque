@@ -1,9 +1,22 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
+/**
+ * Class User
+ * @package StreetArtvisor\Entities
+ * @property integer  id
+ * @property string   email
+ * @property string   name
+ * @property Carbon   created_at
+ * @property Carbon   updated_at
+ * @property Carbon   deleted_at
+ */
 
 class User extends Authenticatable
 {

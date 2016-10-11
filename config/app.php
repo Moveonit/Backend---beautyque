@@ -165,6 +165,7 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Dingo\Api\Provider\LaravelServiceProvider::class,
+        Themsaid\Transformers\TransformersServiceProvider::class,
         /*
          * Package Service Providers...
          */

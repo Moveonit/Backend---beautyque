@@ -4,10 +4,11 @@ namespace App\Http\Controllers\v1\Auth;
 
 use Illuminate\Http\Request;
 
-use App\User;
+use App\Entities\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use UserTransformer;
 use JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -91,7 +92,7 @@ class JwtAuthenticateController extends Controller
     {
         $user = JWTAuth::parseToken()->toUser();
 
-        
+        return response(UserTransformer::transform($user));
     }
 
     public function refresh()
@@ -105,7 +106,9 @@ class JwtAuthenticateController extends Controller
         }catch(TokenInvalidException $e){
             throw new AccessDeniedHttpException('The token is invalid');
         }
-        return $this->response->withArray(['token'=>$token]);
+        return response()->json([
+            'token' => $token
+        ]);
     }
 
     public function pratiche($id)
