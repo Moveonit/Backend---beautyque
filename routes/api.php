@@ -1,6 +1,32 @@
 <?php
 
-use Illuminate\Http\Request;
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) {
+
+    $api->group(['namespace' => 'App\Http\Controllers\v1'], function ($api) {
+
+        $api->get('ciao', function () {
+            return "ciao";
+        });
+
+        $api->post('changePassword','Auth\JwtAuthenticateController@changePassword');
+
+        $api->post('signup','Auth\JwtAuthenticateController@signup');
+
+        $api->post('login','Auth\JwtAuthenticateController@authenticate');
+
+        $api->get('refresh','Auth\JwtAuthenticateController@authenticate');
+    });
+
+    $api->group([
+        'middleware' => 'jwt.auth',
+        'namespace' => 'App\Http\Controllers\v1'
+    ], function ($api) {
+        $api->get('me', 'Auth\JwtAuthenticateController@me');
+    });
+});
+//use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,7 +37,7 @@ use Illuminate\Http\Request;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+
 
 Route::group(['namespace' => 'v1'], function() {
     // Controllers Within The "App\Http\Controllers\v1" Namespace
@@ -23,13 +49,23 @@ Route::group(['namespace' => 'v1'], function() {
 
     Route::post('/signup','Auth\JwtAuthenticateController@signup');
 
-    Route::post('/authenticate','Auth\JwtAuthenticateController@authenticate');
+    Route::post('/login','Auth\JwtAuthenticateController@authenticate');
+
+    Route::get('auth/google', 'Auth\AuthController@redirectToGoogle');
+
+    Route::get('auth/google/callback', 'Auth\AuthController@handleGoogleCallback');
+
+    Route::group(['middleware' => 'jwt.refresh'], function ($api) {
+        $api->get('refresh', 'Auth\JwtAuthenticateController@refresh');
+    });
 
     Route::group(['middleware' => 'jwt.auth'], function ($api) {
         $api->get('me', 'Auth\JwtAuthenticateController@me');
     });
 
 });
+
+*/
 
 
 

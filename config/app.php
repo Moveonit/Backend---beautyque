@@ -164,6 +164,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Dingo\Api\Provider\LaravelServiceProvider::class,
         /*
          * Package Service Providers...
          */

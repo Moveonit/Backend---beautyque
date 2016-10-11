@@ -89,7 +89,23 @@ class JwtAuthenticateController extends Controller
 
     public function me()
     {
-        return JWTAuth::parseToken()->toUser();
+        $user = JWTAuth::parseToken()->toUser();
+
+        
+    }
+
+    public function refresh()
+    {
+        $token = JWTAuth::getToken();
+        if(!$token){
+            throw new BadRequestHtttpException('Token not provided');
+        }
+        try{
+            $token = JWTAuth::refresh($token);
+        }catch(TokenInvalidException $e){
+            throw new AccessDeniedHttpException('The token is invalid');
+        }
+        return $this->response->withArray(['token'=>$token]);
     }
 
     public function pratiche($id)
