@@ -1,5 +1,4 @@
 <?php
-
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
@@ -12,21 +11,28 @@ $api->version('v1', function ($api) {
 
         $api->post('changePassword','Auth\JwtAuthenticateController@changePassword');
 
-        $api->post('signup','Auth\JwtAuthenticateController@signup');
+        $api->post('register','Auth\JwtAuthenticateController@signup');
 
         $api->post('login','Auth\JwtAuthenticateController@authenticate');
 
         $api->get('refresh','Auth\JwtAuthenticateController@refresh');
+
+        $api->get('users', 'UserController@index');
+
+        $api->get('users/{id}', 'UserController@show');
+
+        $api->group([
+            'middleware' => 'jwt.auth',
+        ], function ($api) {
+
+            $api->get('me', 'Auth\JwtAuthenticateController@me');
+
+
+
+        });
     });
 
-    $api->group([
-        'middleware' => 'jwt.auth',
-        'namespace' => 'App\Http\Controllers\v1'
-    ], function ($api) {
 
-        $api->get('me', 'Auth\JwtAuthenticateController@me');
-
-    });
 });
 //use Illuminate\Http\Request;
 

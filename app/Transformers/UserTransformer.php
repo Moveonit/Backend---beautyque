@@ -1,31 +1,30 @@
 <?php
-
-use App\Entities\User;
-use Carbon\Carbon;
 /**
  * Created by PhpStorm.
  * User: DANIELE
- * Date: 11/10/2016
- * Time: 12:09
+ * Date: 12/10/2016
+ * Time: 09:01
  */
 
-class UserTransformer extends Themsaid\Transformers\AbstractTransformer
+namespace App\Transformers;
+
+use App\Entities\User;
+use League\Fractal;
+
+class UserTransformer extends Fractal\TransformerAbstract
 {
-    public function transformModel(User $item)
+    public function transform(User $user)
     {
-        $output = [
-            'id'                => $item->id,
-            'name'              => $item->name,
-            'email'             => $item->email,
-            'timestamp'         => [
-                'created_at'        => (string)Carbon::parse($item->created_at)->toIso8601String(),
-                'created_at_diff'   => (string)Carbon::parse($item->created_at)->diffForHumans(),
-                'updated_at'        => (string)Carbon::parse($item->updated_at)->toIso8601String(),
-                'updated_at_diff'   => (string)Carbon::parse($item->updated_at)->diffForHumans(),
+        return [
+            'id'        => (integer) $user->id,
+            'name'      => (string) $user->name,
+            'email'     => (string) $user->email,
+            'links'     => [
+                [
+                    'rel'   => 'self',
+                    'user'  => '/users/'.$user->id,
+                ]
             ],
         ];
-
-        return $output;
     }
-
 }

@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Entities\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Transformers\UserTransformer;
 use Illuminate\Support\Facades\Auth;
-use UserTransformer;
+use Illuminate\Pagination\Paginator;
 use JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -92,8 +93,14 @@ class JwtAuthenticateController extends Controller
     {
         $user = JWTAuth::parseToken()->toUser();
 
-        return response(UserTransformer::transform($user));
+
+        return UserTransformer::transform( $user );
+        //return response(UserTransformer::transform( $user )->paginate(10));
+
+        //return response(UserTransformer::transformModel($user));
     }
+
+
 
     public function refresh()
     {
