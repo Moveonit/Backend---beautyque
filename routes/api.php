@@ -5,8 +5,8 @@ $api->version('v1', function ($api) {
 
     $api->group(['namespace' => 'App\Http\Controllers\v1'], function ($api) {
 
-        $api->get('ciao', function () {
-            return "ciao";
+        $api->get('prova', function () {
+            return response()->json(['prova'=>'Nome']);
         });
 
         $api->post('changePassword','Auth\JwtAuthenticateController@changePassword');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Entities\User;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Transformers\UserTransformer;
 use App\Http\Requests;
 
@@ -60,9 +61,19 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
         //
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $profile = $user->profile;
+            $data = $request->all();
+            $profile->fill($data)->save();
+            return $user->profile;
+        }catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
     }
 
     /**

@@ -9,7 +9,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class User
- * @package StreetArtvisor\Entities
  * @property integer  id
  * @property string   email
  * @property string   name
