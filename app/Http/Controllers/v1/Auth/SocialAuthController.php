@@ -11,9 +11,13 @@ class SocialAuthController extends Controller
      *
      * @return Response
      */
-    public function redirectToProvider()
+    public function redirectToProviderFacebook()
     {
         return Socialite::driver('facebook')->redirect();
+    }
+    public function redirectToProviderGoogle()
+    {
+        return Socialite::driver('google')->redirect();
     }
 
     /**
@@ -21,9 +25,15 @@ class SocialAuthController extends Controller
      *
      * @return Response
      */
-    public function handleProviderCallback()
+    public function handleProviderCallbackFacebook()
     {
         $user = Socialite::driver('facebook')->user();
+        return $user;
+        // $user->token;
+    }
+    public function handleProviderCallbackGoogle()
+    {
+        $user = Socialite::driver('google')->user();
         return $user;
         // $user->token;
     }

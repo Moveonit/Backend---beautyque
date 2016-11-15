@@ -6,7 +6,7 @@ $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers\v1'], function ($api) {
 
         $api->get('prova', function () {
-            return response()->json(['prova'=>'Nome']);
+            return response()->json(['prova'=>'UL']);
         });
 
         $api->post('changePassword','Auth\JwtAuthenticateController@changePassword');
@@ -24,11 +24,7 @@ $api->version('v1', function ($api) {
         $api->group([
             'middleware' => 'jwt.auth',
         ], function ($api) {
-
-            $api->get('me', 'Auth\JwtAuthenticateController@me');
-
-
-
+            $api->get('me', 'UserController@me');
         });
     });
 

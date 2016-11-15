@@ -73,7 +73,13 @@ class UserController extends Controller
         }catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
+    }
 
+    public function me()
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        return $this->transformModel(User::where('id',$user->id)->get(),new UserTransformer);
+        //return $this->transformModel(User::where('id',$id)->get(),new UserTransformer);
     }
 
     /**

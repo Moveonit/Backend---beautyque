@@ -89,19 +89,6 @@ class JwtAuthenticateController extends Controller
         return response()->json(compact('token'));
     }
 
-    public function me()
-    {
-        $user = JWTAuth::parseToken()->toUser();
-
-
-        return UserTransformer::transform( $user );
-        //return response(UserTransformer::transform( $user )->paginate(10));
-
-        //return response(UserTransformer::transformModel($user));
-    }
-
-
-
     public function refresh()
     {
         $token = JWTAuth::getToken();
