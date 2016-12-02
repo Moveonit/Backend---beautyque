@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Entities\User;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Transformers\UserTransformer;
 use App\Http\Requests;
@@ -75,11 +76,24 @@ class UserController extends Controller
         }
     }
 
+    public function checkemail($email)
+    {
+        if(count(User::where('email',$email)->get()))
+            return Response()->json(null,204);
+        return Response()->json(null,404);
+    }
+
     public function me()
     {
         $user = JWTAuth::parseToken()->authenticate();
         return $this->transformModel(User::where('id',$user->id)->get(),new UserTransformer);
         //return $this->transformModel(User::where('id',$id)->get(),new UserTransformer);
+    }
+
+    public function ciao()
+    {
+        $content = User::where('id',5)->get();
+        Storage::disk('csv')->put('file.csv', $content);
     }
 
     /**

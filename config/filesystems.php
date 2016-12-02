@@ -62,6 +62,11 @@ return [
             'bucket' => 'your-bucket',
         ],
 
+        'csv' => [
+            'driver' => 'local',
+            'root'   => storage_path().'/csv',
+        ],
+
     ],
 
 ];
