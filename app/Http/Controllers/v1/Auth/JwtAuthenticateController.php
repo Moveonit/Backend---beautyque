@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\v1\Auth;
 
+use App\Entities\Guest;
+use App\Transformers\UserTransformer;
+use Dingo\Api\Exception\ValidationHttpException;
+use Dingo\Api\Http\Response;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-
 use App\Entities\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Transformers\UserTransformer;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Pagination\Paginator;
 use JWTAuth;
 use Illuminate\Support\Facades\Validator;
+use Mockery\CountValidator\Exception;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Log;
 
@@ -26,48 +28,85 @@ class JwtAuthenticateController extends Controller
 
     public function index()
     {
-        return response()->json(['auth'=>Auth::user(), 'users'=>User::all()]);
+        //return response()->json(['auth'=>Auth::user(), 'users'=>User::all()]);
     }
 
     public function  show($id) {
-        return User::find($id);
+        //return User::find($id);
     }
+
 
     public function signup(Request $request)
     {
+        $guest_id = 0;
+        try {
+            $validator = Validator::make($request->all(), [
+                'email' => 'required|email|max:255',
+                'password' => 'required',
+                'name' => 'required',
+                'surname' => 'required',
+                'city' => 'required',
+                'address' => 'required',
+                'birthday' => 'required|date',
+                'gender' => 'required'
+            ]);
 
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:255',
-            'name' => 'required|max:255',
-            'password' => 'required',
-        ]);
+            if ($validator->fails()) {
+                throw new ValidationHttpException($validator->errors()->all());
+            }
 
-        if ($validator->fails()) {
-            return redirect('post/create')
-                ->withErrors($validator)
-                ->withInput();
+            $guestData["name"] = $request->name;
+            $guestData["surname"] = $request->surname;
+            $guestData["city"] = $request->city;
+            $guestData["address"] = $request->address;
+            $guestData["birthday"] = $request->birthday;
+            $guestData["gender"] = $request->gender;
+
+            $guest = Guest::create($guestData);
+
+            $guest_id = $guest->id;
+
+            User::unguard();
+            $userData["email"] = $request->email;
+            $userData["password"] = bcrypt($request->password);
+            $userData["userable_id"] = $guest->id;
+            $userData["userable_type"] = "Guest";
+            $user = User::create($userData);
+            User::reguard();
+
+            if (!$user->id) {
+                return $this->response->error('could_not_create_user', 500);
+            }
+
+            //if($hasToReleaseToken) {
+            return $this->authenticate($request);
+            //}
+
+            //return $this->response->created();
+        }catch(Exception $ex) {
+            if ($guest_id > 0) {
+                $guest = Guest::find($guest_id);
+
+                $guest->forceDelete();
+            }
+
+            return response()->json([
+                'Error' => $ex->getMessage()
+            ]);
+        }
+        catch(QueryException $ex)
+        {
+            if ($guest_id > 0) {
+                $guest = Guest::find($guest_id);
+
+                $guest->forceDelete();
+            }
+
+            return response()->json([
+                'Error' => $ex->getMessage()
+            ]);
         }
 
-
-        if($validator->fails()) {
-            throw new ValidationHttpException($validator->errors()->all());
-        }
-
-        User::unguard();
-        $userData = $request->all();
-        $userData["password"] = bcrypt($request->password);
-        $user = User::create($userData);
-        User::reguard();
-
-        if(!$user->id) {
-            return $this->response->error('could_not_create_user', 500);
-        }
-
-        //if($hasToReleaseToken) {
-        return $this->authenticate($request);
-        //}
-
-        //return $this->response->created();
     }
 
 
@@ -86,7 +125,9 @@ class JwtAuthenticateController extends Controller
         }
 
         // if no errors are encountered we can return a JWT
-        return response()->json(compact('token'));
+        //return response()->json(compact('token'));
+        return $this->response->item(User::where('email',$request->email)->first(), new UserTransformer)->addMeta('token', $token);
+
     }
 
     public function refresh()
@@ -103,12 +144,6 @@ class JwtAuthenticateController extends Controller
         return response()->json([
             'token' => $token
         ]);
-    }
-
-    public function pratiche($id)
-    {
-        //return response()->json(['auth'=>Auth::user(), 'pratiche'=>JWTAuth::parseToken()->toUser()->pratiche]);
-        return JWTAuth::parseToken()->toUser()->pratiche;
     }
 
     public function changePassword(Request $request)

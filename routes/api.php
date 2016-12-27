@@ -5,34 +5,22 @@ $api->version('v1', function ($api) {
 
     $api->group(['namespace' => 'App\Http\Controllers\v1'], function ($api) {
 
-        $api->get('prova', function () {
-            return response()->json(['prova'=>'UL']);
-        });
-
-        $api->get('phpinfo', function () {
-            return phpinfo();
-        });
-
         $api->post('signup','Auth\JwtAuthenticateController@signup');
 
         $api->post('login','Auth\JwtAuthenticateController@authenticate');
 
-        $api->get('ciao','UserController@ciao');
-
         $api->get('checkemail/{email}','UserController@checkemail');
 
-        $api->get('refresh','Auth\JwtAuthenticateController@refresh');
+        $api->get('/prova', function () {
+            return "Prova";
+        });
 
-
-
-        $api->group([
-            'middleware' => 'jwt.auth',
-        ], function ($api) {
+        $api->group(['middleware' => 'jwt.auth',], function ($api) {
             $api->get('me', 'UserController@me');
 
-            $api->get('users', 'UserController@index');
+            $api->get('refresh','Auth\JwtAuthenticateController@refresh');
 
-            $api->get('users/{id}', 'UserController@show');
+            $api->resource('users', 'UserController');
 
             $api->post('changePassword','Auth\JwtAuthenticateController@changePassword');
         });

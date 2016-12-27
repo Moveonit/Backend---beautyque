@@ -16,9 +16,9 @@ class UserTransformer extends Fractal\TransformerAbstract
     public function transform(User $user)
     {
         return [
-            'id'        => (integer) $user->id,
-            'name'      => (string) $user->name,
-            'email'     => (string) $user->email,
+            'id'                    => (integer) $user->id,
+            'email'                 => (string) $user->email,
+            $user->userable_type    => $user->userable,
             'links'     => [
                 [
                     'rel'   => 'self',
@@ -27,4 +27,16 @@ class UserTransformer extends Fractal\TransformerAbstract
             ],
         ];
     }
+
+    /**
+     * Include Guest
+     *
+     * @return League\Fractal\ItemResource
+
+    public function includeUserable(User $user)
+    {
+        $author = $user->userable();
+
+        return $this->item($author, new AuthorTransformer);
+    }*/
 }

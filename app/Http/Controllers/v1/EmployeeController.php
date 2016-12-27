@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\v1;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Entities\User;
-use Illuminate\Support\Facades\Storage;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Transformers\UserTransformer;
+
 use App\Http\Requests;
 
-class UserController extends Controller
+class EmployeeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->trasformPaginate(User::paginate(),UserTransformer::class);
+        //
     }
 
     /**
@@ -52,8 +48,6 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        return $this->transformModel(User::where('id',$id)->get(),new UserTransformer);
-
     }
 
     /**
@@ -62,38 +56,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id)
     {
         //
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
-            $profile = $user->profile;
-            $data = $request->all();
-            $profile->fill($data)->save();
-            return $user->profile;
-        }catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-    }
-
-    public function checkemail($email)
-    {
-        if(count(User::where('email',$email)->get()))
-            return Response()->json(null,204);
-        return Response()->json(null,404);
-    }
-
-    public function me()
-    {
-        $user = JWTAuth::parseToken()->authenticate();
-        return $this->transformModel(User::where('id',$user->id)->get(),new UserTransformer);
-    }
-
-
-    public function ciao()
-    {
-        $content = User::where('id',5)->get();
-        Storage::disk('csv')->put('file.csv', $content);
     }
 
     /**
