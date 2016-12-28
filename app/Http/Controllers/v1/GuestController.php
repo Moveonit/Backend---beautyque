@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Http\Controllers\Controller;
+use App\Entities\Guest;
+use App\Transformers\GuestTransformer;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -48,6 +51,7 @@ class GuestController extends Controller
     public function show($id)
     {
         //
+        return $this->transformModel(Guest::findOrFail($id),new GuestTransformer);
     }
 
     /**

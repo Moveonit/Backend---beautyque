@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Http\Controllers\Controller;
+use App\Entities\Spa;
+use App\Transformers\SpaTransformer;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -26,6 +29,18 @@ class SpaController extends Controller
     public function create()
     {
         //
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
         try {
             $user = JWTAuth::parseToken()->authenticate();
             $profile = $user->profile;
@@ -38,17 +53,6 @@ class SpaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -57,6 +61,7 @@ class SpaController extends Controller
     public function show($id)
     {
         //
+        return $this->transformModel(Spa::find($id),new SpaTransformer);
     }
 
     /**

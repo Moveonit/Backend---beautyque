@@ -5,6 +5,8 @@ $api->version('v1', function ($api) {
 
     $api->group(['namespace' => 'App\Http\Controllers\v1'], function ($api) {
 
+        $api->get('refresh','Auth\JwtAuthenticateController@refresh');
+
         $api->post('signup','Auth\JwtAuthenticateController@signup');
 
         $api->post('login','Auth\JwtAuthenticateController@authenticate');
@@ -18,9 +20,13 @@ $api->version('v1', function ($api) {
         $api->group(['middleware' => 'jwt.auth',], function ($api) {
             $api->get('me', 'UserController@me');
 
-            $api->get('refresh','Auth\JwtAuthenticateController@refresh');
+            $api->resource('users', 'UserController',['only' => ['show', 'store', 'update']]);
 
-            $api->resource('users', 'UserController');
+            $api->resource('spas', 'SpaController',['only' => ['show', 'store', 'update']]);
+
+            $api->resource('employees', 'EmployeeController',['only' => ['show', 'store', 'update']]);
+
+            $api->resource('guests', 'GuestController',['only' => ['show', 'store', 'update']]);
 
             $api->post('changePassword','Auth\JwtAuthenticateController@changePassword');
         });

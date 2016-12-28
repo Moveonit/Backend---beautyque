@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Http\Controllers\Controller;
+use App\Entities\Employee;
+use App\Transformers\EmployeeTransformer;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -48,6 +51,7 @@ class EmployeeController extends Controller
     public function show($id)
     {
         //
+        return $this->transformModel(Employee::findOrFail($id),new EmployeeTransformer);
     }
 
     /**

@@ -52,7 +52,8 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        return $this->transformModel(User::where('id',$id)->get(),new UserTransformer);
+        return $id;
+        return $this->transformModel(User::find($id),new UserTransformer);
 
     }
 
