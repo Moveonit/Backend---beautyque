@@ -18,6 +18,7 @@ class UserTransformer extends Fractal\TransformerAbstract
         return [
             'id'                    => (integer) $user->id,
             'email'                 => (string) $user->email,
+            'type'                  => (string) $user->userable_type,
             $user->userable_type    => $user->userable,
             'links'     => [
                 [

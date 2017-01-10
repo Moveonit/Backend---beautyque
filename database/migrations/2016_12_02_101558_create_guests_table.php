@@ -20,6 +20,7 @@ class CreateGuestsTable extends Migration
             $table->string('city');
             $table->string('address');
             $table->date('birthday');
+            $table->string('province');
             $table->char('gender', 1);
             $table->timestamps();
             $table->softDeletes();

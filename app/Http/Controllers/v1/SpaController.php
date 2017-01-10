@@ -18,7 +18,7 @@ class SpaController extends Controller
      */
     public function index()
     {
-        //
+        return $this->trasformPaginate(Spa::paginate(),SpaTransformer::class);
     }
 
     /**
@@ -61,7 +61,20 @@ class SpaController extends Controller
     public function show($id)
     {
         //
+        return $this->transformModel(Spa::find($id)->get(),new SpaTransformer);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showEmployees($id)
+    {
+        //
         return $this->transformModel(Spa::find($id),new SpaTransformer);
+        Spa::find($id);
     }
 
     /**

@@ -23,6 +23,7 @@ class CreateSpasTable extends Migration
             $table->string('telephone');
             $table->string('zip_code');
             $table->string('fax')->nullable();
+            $table->string('province');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddProvinceToSpaGuest extends Migration
+class AddLatlngToSpasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,29 +13,24 @@ class AddProvinceToSpaGuest extends Migration
      */
     public function up()
     {
-        Schema::table('guests', function (Blueprint $table) {
-            //
-            $table->string('province');
-        });
         Schema::table('spas', function (Blueprint $table) {
             //
-            $table->string('province');
+            $table->float('latitude', 10, 8);
+            $table->float('longitude', 11, 8);
         });
     }
 
     /**
      * Reverse the migrations.
-     *     * @return void
+     *
+     * @return void
      */
     public function down()
     {
-        Schema::table('guests', function (Blueprint $table) {
-            //
-            $table->dropColumn('province');
-        });
         Schema::table('spas', function (Blueprint $table) {
             //
-            $table->dropColumn('province');
+            $table->dropColumn("latitude");
+            $table->dropColumn("longitude");
         });
     }
 }

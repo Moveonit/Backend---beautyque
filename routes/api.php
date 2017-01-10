@@ -22,7 +22,7 @@ $api->version('v1', function ($api) {
 
             $api->resource('users', 'UserController',['only' => ['show', 'store', 'update']]);
 
-            $api->resource('spas', 'SpaController',['only' => ['show', 'store', 'update']]);
+            $api->resource('spas', 'SpaController',['only' => ['index','show', 'store', 'update']]);
 
             $api->resource('employees', 'EmployeeController',['only' => ['show', 'store', 'update']]);
 

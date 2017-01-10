@@ -15,16 +15,11 @@ class EmployeeTransformer extends Fractal\TransformerAbstract
 {
     public function transform(Employee $employee)
     {
+        $spa = $employee->spa();
         return [
             'id'        => (integer) $employee->id,
             'name'      => (string) $employee->name,
-            'email'     => (string) $employee->email,
-            'links'     => [
-                [
-                    'rel'   => 'self',
-                    'user'  => '/users/'.$employee->id,
-                ]
-            ],
+            'spa'       => $spa
         ];
     }
 }

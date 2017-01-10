@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string   telephone
  * @property string   zip_code
  * @property string   fax
+ * @property float    latitude
+ * @property float    longitude
  * @property Carbon   created_at
  * @property Carbon   updated_at
  * @property Carbon   deleted_at
@@ -25,7 +27,7 @@ class Spa extends Model
     //
     use SoftDeletes;
 
-    protected $fillable = ['company_name', 'vat_number', 'fiscal_code', 'address', 'city', 'telephone', 'zip_code','fax'];
+    protected $fillable = ['company_name', 'vat_number', 'fiscal_code', 'address', 'city', 'telephone', 'zip_code','fax','latitude','longitude'];
 
     protected $guarded = ['id'];
 
@@ -38,6 +40,8 @@ class Spa extends Model
      */
     public function employee()
     {
-        return $this->belongsTo('Employee');
+        return Employee::where('spa_id',$this->id)->get();
+
+        //return $this->hasMany('App\Entities\Employee');
     }
 }

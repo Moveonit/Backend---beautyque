@@ -2,14 +2,16 @@
 
 namespace App\Entities;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 /**
  * Class Employee
  * @property integer  id
  * @property string   name
- * @property integer  spas_id
+ * @property string  spa_id
  * @property Carbon   created_at
  * @property Carbon   updated_at
  * @property Carbon   deleted_at
@@ -19,7 +21,7 @@ class Employee extends Model
     //
     use SoftDeletes;
 
-    protected $fillable = ['name', 'spas_id'];
+    protected $fillable = ['name', 'spa_id'];
 
     protected $guarded = ['id'];
 
@@ -30,9 +32,11 @@ class Employee extends Model
 
     /**
      * Get the spa associated at the employee.
+     * @return \App\Entities\Spa
      */
     public function spa()
     {
-        return $this->hasOne('Spa');
+        return Spa::find($this->spa_id);
+        //return $this->belongsTo('App\Entities\Spa');
     }
 }

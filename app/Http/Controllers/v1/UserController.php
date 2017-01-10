@@ -52,8 +52,7 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        return $id;
-        return $this->transformModel(User::find($id),new UserTransformer);
+        return $this->transformModel(User::where('id',$id)->get(),new UserTransformer);
 
     }
 
@@ -88,13 +87,6 @@ class UserController extends Controller
     {
         $user = JWTAuth::parseToken()->authenticate();
         return $this->transformModel(User::where('id',$user->id)->get(),new UserTransformer);
-    }
-
-
-    public function ciao()
-    {
-        $content = User::where('id',5)->get();
-        Storage::disk('csv')->put('file.csv', $content);
     }
 
     /**

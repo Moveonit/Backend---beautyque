@@ -16,11 +16,11 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->bigInteger('spas_id')->unsigned();
+            $table->bigInteger('spa_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('spas_id')->references('id')->on('spas')->onDelete('cascade');
+            $table->foreign('spa_id')->references('id')->on('spas')->onDelete('cascade');
         });
     }
 

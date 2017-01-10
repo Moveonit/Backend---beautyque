@@ -51,7 +51,8 @@ class EmployeeController extends Controller
     public function show($id)
     {
         //
-        return $this->transformModel(Employee::findOrFail($id),new EmployeeTransformer);
+        $employee = Employee::where('id',$id)->get();
+        return $this->transformModel($employee,new EmployeeTransformer);
     }
 
     /**

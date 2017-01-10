@@ -60,6 +60,7 @@ class JwtAuthenticateController extends Controller
             $guestData["city"] = $request->city;
             $guestData["address"] = $request->address;
             $guestData["birthday"] = $request->birthday;
+            $guestData["province"] = $request->province;
             $guestData["gender"] = $request->gender;
 
             $guest = Guest::create($guestData);
