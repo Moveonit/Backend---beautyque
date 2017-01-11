@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Manager;
+use League\Fractal\Resource\Item;
 
 class Controller extends BaseController
 {
@@ -33,13 +34,13 @@ class Controller extends BaseController
 
     public function transformModel($model, $transformer)
     {
-        if ($model->isEmpty())
+        if ($model == null)
             return response('', 204);
 
         $fractal = new Manager();
-        $resource = new Collection($model, $transformer);
+        $models[0] = $model;
+        $resource = new Collection($models, $transformer);
         return response()->json($fractal->createData($resource)->toJson());
 
     }
-
 }

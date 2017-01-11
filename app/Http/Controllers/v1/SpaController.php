@@ -32,24 +32,20 @@ class SpaController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
-            $profile = $user->profile;
-            $data = $request->all();
-            $profile->fill($data)->save();
-            return $user->profile;
-        }catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
+        $this->validate($request, [
+            'name' => 'required',
+            'surname' => 'required',
+            'city' => 'required',
+            'address' => 'required',
+            'birthday' => 'required',
+            'province' => 'required',
+            'gender' => 'required'
+        ]);
+
+        $guest = new Guest();
+        $guest->fill($request->all());
     }
 
     /**
@@ -61,7 +57,7 @@ class SpaController extends Controller
     public function show($id)
     {
         //
-        return $this->transformModel(Spa::find($id)->get(),new SpaTransformer);
+        return $this->transformModel(Spa::find($id),new SpaTransformer);
     }
 
     /**

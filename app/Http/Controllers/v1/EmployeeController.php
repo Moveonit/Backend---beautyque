@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Entities\Guest;
 use App\Http\Controllers\Controller;
 use App\Entities\Employee;
 use App\Transformers\EmployeeTransformer;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class EmployeeController extends Controller
 {
@@ -19,6 +21,7 @@ class EmployeeController extends Controller
     public function index()
     {
         //
+        return $this->trasformPaginate(Employee::paginate(),EmployeeTransformer::class);
     }
 
     /**
@@ -39,7 +42,25 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = JWTAuth::parseToken()->authenticate();
+        if($user->userable_type == "Spa") {
+            $userable = $user->userable;
+            //
+
+            $this->validate($request, [
+                'name' => 'required'
+            ]);
+
+            $employee = new Employee();
+            $employee->name = $request->name;
+            $employee->spa_id = $userable->id;
+
+            $employee->save();
+
+            return $employee;
+        }else{
+            abort(403, 'Unauthorized action.');
+        }
     }
 
     /**
@@ -51,8 +72,7 @@ class EmployeeController extends Controller
     public function show($id)
     {
         //
-        $employee = Employee::where('id',$id)->get();
-        return $this->transformModel($employee,new EmployeeTransformer);
+        return $this->transformModel(Employee::find($id),new EmployeeTransformer);
     }
 
     /**

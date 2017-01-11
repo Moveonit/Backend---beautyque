@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\v1;
 
+use App\Entities\Treatment;
 use App\Http\Controllers\Controller;
+use App\Transformers\TreatmentTransformer;
 use Illuminate\Http\Request;
-use App\Entities\User;
-use Illuminate\Support\Facades\Storage;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use App\Transformers\UserTransformer;
-use App\Http\Requests;
 
-class UserController extends Controller
+class TreatmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->trasformPaginate(User::paginate(),UserTransformer::class);
+        //
+        return $this->trasformPaginate(Treatment::paginate(),TreatmentTransformer::class);
     }
 
     /**
@@ -52,7 +50,7 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        return $this->transformModel(User::where('id',$id)->get(),new UserTransformer);
+        return $this->transformModel(Treatment::find($id),new TreatmentTransformer);
 
     }
 
@@ -62,31 +60,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id)
     {
         //
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
-            $profile = $user->profile;
-            $data = $request->all();
-            $profile->fill($data)->save();
-            return $user->profile;
-        }catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-    }
-
-    public function checkemail($email)
-    {
-        if(count(User::where('email',$email)->get()))
-            return Response()->json(null,204);
-        return Response()->json(null,404);
-    }
-
-    public function me()
-    {
-        $user = JWTAuth::parseToken()->authenticate();
-        return $this->transformModel($user,new UserTransformer);
     }
 
     /**

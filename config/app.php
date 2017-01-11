@@ -230,10 +230,12 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Employee'  => 'app\Entities\Employee',
-        'Guest'     => 'app\Entities\Guest',
-        'Spa'       => 'app\Entitites\Spa',
-        'User'      => 'app\Entities\User',
+        'Employee'              => 'app\Entities\Employee',
+        'Guest'                 => 'app\Entities\Guest',
+        'Treatment'             => 'app\Entities\Treatment',
+        'TreatmentCategory'     => 'app\Entities\TreatmentCategory',
+        'Spa'                   => 'app\Entitites\Spa',
+        'User'                  => 'app\Entities\User',
     ],
 
 ];

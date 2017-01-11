@@ -28,17 +28,4 @@ class Guest extends Model
     protected $fillable = ['name', 'surname', 'city', 'address', 'birthday','province', 'gender'];
 
     protected $guarded = ['id'];
-
-    public function user()
-    {
-        return $this->morphMany('User', 'userable');
-    }
-
-    /**
-     * Get the employee of the spa.
-     */
-    public function employee()
-    {
-        return $this->belongsTo('Employee');
-    }
 }

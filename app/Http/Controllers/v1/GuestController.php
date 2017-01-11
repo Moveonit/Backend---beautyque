@@ -19,6 +19,7 @@ class GuestController extends Controller
     public function index()
     {
         //
+        return $this->trasformPaginate(Guest::paginate(),GuestTransformer::class);
     }
 
     /**
@@ -39,7 +40,6 @@ class GuestController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**

@@ -18,13 +18,12 @@ class GuestTransformer extends Fractal\TransformerAbstract
         return [
             'id'        => (integer) $guest->id,
             'name'      => (string) $guest->name,
-            'email'     => (string) $guest->email,
-            'links'     => [
-                [
-                    'rel'   => 'self',
-                    'user'  => '/users/'.$guest->id,
-                ]
-            ],
+            'surname'   => (string) $guest->surname,
+            'city'      => (string) $guest->city,
+            'province'  => (string) $guest->province,
+            'address'   => (string) $guest->address,
+            'birthday'  => $guest->birthday,
+            'gender'    => (string) $guest->gender,
         ];
     }
 }

@@ -20,12 +20,6 @@ class UserTransformer extends Fractal\TransformerAbstract
             'email'                 => (string) $user->email,
             'type'                  => (string) $user->userable_type,
             $user->userable_type    => $user->userable,
-            'links'     => [
-                [
-                    'rel'   => 'self',
-                    'user'  => '/users/'.$user->id,
-                ]
-            ],
         ];
     }
 
