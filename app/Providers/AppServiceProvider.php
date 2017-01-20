@@ -5,6 +5,9 @@ namespace App\Providers;
 use App\Entities\Employee;
 use App\Entities\Guest;
 use App\Entities\Spa;
+use App\Entities\Treatment;
+use App\Entities\TreatmentCategory;
+use App\Entities\Treatmenthistory;
 use App\Entities\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -25,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
             'Employee' => Employee::class,
             'Guest' => Guest::class,
             'Spa' => Spa::class,
+            'Treatment' => Treatment::class,
+            'TreatmentCategory' => TreatmentCategory::class,
+            'Treatmenthistory' => Treatmenthistory::class,
         ]);
     }
 
